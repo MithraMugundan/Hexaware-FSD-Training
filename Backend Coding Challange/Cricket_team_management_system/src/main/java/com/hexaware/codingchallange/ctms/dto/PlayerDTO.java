@@ -1,19 +1,28 @@
 package com.hexaware.codingchallange.ctms.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 public class PlayerDTO {
 
 
-	 private Long playerId;
+	@NotNull(message = "Player ID cannot be null")
+    @Min(value = 1, message = "Player ID must be greater than 0")
+    private Long playerId;
 
-	
+    @NotBlank(message = "Player name cannot be blank")
     private String playerName;
 
-   
+    @NotNull(message = "Jersey number cannot be null")
+    @Min(value = 0, message = "Jersey number must be zero or positive")
     private Integer jerseyNumber;
 
-   
-    private String role; //  Batsman, Bowler, Keeper, All Rounder
-
+    @NotBlank(message = "Role cannot be blank")
+    @Pattern(regexp = "Batsman|Bowler|Keeper|All Rounder", 
+             message = "Role must be one of Batsman, Bowler, Keeper, All Rounder")
+    private String role;
    
     private Integer totalMatches;
 

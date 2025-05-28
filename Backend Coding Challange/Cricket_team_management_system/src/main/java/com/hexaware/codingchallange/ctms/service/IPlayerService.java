@@ -19,5 +19,7 @@ public interface IPlayerService {
 	    public String deletePlayerByID(Long playerId);
 	    
 	    List<PlayerContext> getAllPlayerContext();
+	    
+	    List<Player> findByTeamName(String teamName);
 
 }

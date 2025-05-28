@@ -3,6 +3,7 @@ package com.hexaware.codingchallange.ctms.restcontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,7 @@ public class PlayerRestController {
 	IPlayerService service;
 	
 	@PostMapping("/addPlayer")
-	public Player addPlayer(@RequestBody PlayerDTO playerDTO) {
+	public Player addPlayer(@Valid @RequestBody PlayerDTO playerDTO) {
 
 	    boolean isValid = PlayerServiceImp.validatePlayerData(playerDTO);
 
@@ -41,8 +42,6 @@ public class PlayerRestController {
 
 	    return player;
 	}
-
-	
 	
 	  @GetMapping("/get/{playerId}")
 	    public Player getPlayerById(@PathVariable Long playerId) throws PlayerNotFoundException {
@@ -73,5 +72,11 @@ public class PlayerRestController {
 	    public List<PlayerContext> getAllPlayerContext() {
 	        return service.getAllPlayerContext();
 	    }
+	  
+	  @GetMapping("/team/{teamName}")
+	  public List<Player> getPlayersByTeamName(@PathVariable String teamName) {
+	      return service.findByTeamName(teamName);
+	  }
+	  
 
 }

@@ -23,6 +23,7 @@ public class PlayerServiceImp implements IPlayerService {
 	@Override
 	public Player addPlayer(PlayerDTO playerDTO) {
 
+		
 		Player player = new Player();
 			player.setPlayerId(playerDTO.getPlayerId());
 			player.setPlayerName(playerDTO.getPlayerName());
@@ -40,11 +41,11 @@ public class PlayerServiceImp implements IPlayerService {
 	@Override
 	public Player updatePlayer(Long playerId, PlayerDTO playerDTO) {
 		 Optional<Player> optionalPlayer = repo.findById(playerId);
-		    
+		 
 		    if (optionalPlayer.isPresent()) {
 		        Player player = optionalPlayer.get();
 
-		        // 2. Update player fields from playerDTO
+		        
 		        player.setPlayerName(playerDTO.getPlayerName());
 		        player.setJerseyNumber(playerDTO.getJerseyNumber());
 		        player.setRole(playerDTO.getRole());
@@ -53,10 +54,10 @@ public class PlayerServiceImp implements IPlayerService {
 		        player.setStateName(playerDTO.getStateName());
 		        player.setDescription(playerDTO.getDescription());
 
-		        // 3. Save updated player back to DB
+		        
 		        return repo.save(player);
 		    } else {
-		        // Player not found, return null or throw custom exception
+		        
 		        return null;
 		    }
 		
@@ -76,26 +77,23 @@ public class PlayerServiceImp implements IPlayerService {
 	}
 
 	public static boolean validatePlayerData(PlayerDTO playerDTO) {
-	    boolean flag = false;
+	    boolean isValid = false;
 
 	    if (playerDTO.getPlayerId() != null && playerDTO.getPlayerId() > 0 &&
-	        playerDTO.getPlayerName() != null && !playerDTO.getPlayerName().trim().isEmpty() &&
-	        playerDTO.getJerseyNumber() != null && playerDTO.getJerseyNumber() >= 0 &&
-	        playerDTO.getRole() != null && List.of("Batsman", "Bowler", "Keeper", "All Rounder").contains(playerDTO.getRole()) &&
-	        playerDTO.getTotalMatches() != null && playerDTO.getTotalMatches() >= 0 &&
-	        playerDTO.getTeamName() != null && !playerDTO.getTeamName().trim().isEmpty() &&
-	        playerDTO.getStateName() != null && !playerDTO.getStateName().trim().isEmpty()) {
+	        playerDTO.getRole() != null &&
+	        List.of("Batsman", "Bowler", "Keeper", "All Rounder").contains(playerDTO.getRole())) {
 	        
-	        flag = true;
+	        isValid = true;
 	    }
 
-	    return flag;
+	    return isValid;
 	}
+
 
 	@Override
 	public List<PlayerContext> getAllPlayerContext() {
 	    List<Player> players = repo.findAll();
-	    List<PlayerContext> summaries = new ArrayList<>();
+	    List<PlayerContext> context = new ArrayList<>();
 
 	    for (Player p : players) {
 	        PlayerContext pc = new PlayerContext();
@@ -104,10 +102,10 @@ public class PlayerServiceImp implements IPlayerService {
 	        pc.setJerseyNumber(p.getJerseyNumber());
 	        pc.setRole(p.getRole());
 
-	        summaries.add(pc);
+	        context.add(pc);
 	    }
 
-	    return summaries;
+	    return context;
 
 	}
 
@@ -116,8 +114,17 @@ public class PlayerServiceImp implements IPlayerService {
 		return repo.findAll();
 	}
 
+	@Override
+	public List<Player> findByTeamName(String teamName) {
+		 return repo.findByTeamName(teamName);
+		
+	}
+
 	
 	
+	
+	
+
 	
 	
 
